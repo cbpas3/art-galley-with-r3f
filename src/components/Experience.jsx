@@ -1,37 +1,17 @@
 import { Environment, OrthographicCamera } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { useControls } from "leva";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CharacterController } from "./CharacterController";
 import Paintings from "./Paintings";
 import Walls from "./Walls";
-import { Canvas } from "@react-three/fiber";
-
-const maps = {
-  castle_on_hills: {
-    scale: 3,
-    position: [-6, -7, 0],
-  },
-  animal_crossing_map: {
-    scale: 20,
-    position: [-15, -1, 10],
-  },
-  city_scene_tokyo: {
-    scale: 0.72,
-    position: [0, -1, -3.5],
-  },
-  de_dust_2_with_real_light: {
-    scale: 0.3,
-    position: [-5, -3, 13],
-  },
-  medieval_fantasy_book: {
-    scale: 0.4,
-    position: [-4, 0, -6],
-  },
-};
 
 export const Experience = () => {
   const shadowCameraRef = useRef();
+  const [nearPainting, setNearPainting] = useState(null);
+
+  const handlePaintingProximity = (paintingId) => {
+    setNearPainting(paintingId);
+  };
 
   return (
     <>
@@ -47,7 +27,7 @@ export const Experience = () => {
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
-        distance={10} // Light falloff distance
+        distance={10}
       />
 
       {/* Optional: Add a visible light bulb mesh */}
@@ -77,8 +57,8 @@ export const Experience = () => {
 
       <Physics>
         <Walls />
-        <Paintings />
-        <CharacterController />
+        <Paintings nearPainting={nearPainting} />
+        <CharacterController onNearPainting={handlePaintingProximity} />
       </Physics>
     </>
   );

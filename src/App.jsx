@@ -3,12 +3,14 @@ import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import { Preload } from "@react-three/drei";
 import { Suspense, useEffect, useState } from "react";
+
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
   { name: "left", keys: ["ArrowLeft", "KeyA"] },
   { name: "right", keys: ["ArrowRight", "KeyD"] },
   { name: "run", keys: ["Shift"] },
+  { name: "interact", keys: ["KeyE"] }, // Added interact key
 ];
 
 function App() {
@@ -22,11 +24,17 @@ function App() {
 
     return () => clearTimeout(timeout);
   }, []);
+
   return (
     <KeyboardControls map={keyboardMap}>
       <Canvas
         shadows
-        camera={{ position: [20, 20, 20], near: 0.1, fov: 45 }} // Changed position and increased FOV
+        camera={{
+          position: [20, 20, 20],
+          near: 0.1,
+          fov: 80, // Reduced FOV for better perspective
+          far: 300, // Added far plane
+        }}
         style={{
           touchAction: "none",
         }}

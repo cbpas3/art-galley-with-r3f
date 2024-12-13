@@ -1,11 +1,11 @@
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody, useRapier } from "@react-three/rapier";
-import { useControls } from "leva";
 import { useEffect, useRef, useState } from "react";
-import { MathUtils, Vector3 } from "three";
+import { MathUtils, Quaternion, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { Character } from "./Character";
+import * as THREE from "three";
 
 const normalizeAngle = (angle) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -29,19 +29,6 @@ const lerpAngle = (start, end, t) => {
 };
 
 export const CharacterController = () => {
-  const { WALK_SPEED, RUN_SPEED, ROTATION_SPEED } = useControls(
-    "Character Control",
-    {
-      WALK_SPEED: { value: 0.8, min: 0.1, max: 4, step: 0.1 },
-      RUN_SPEED: { value: 1.6, min: 0.2, max: 12, step: 0.1 },
-      ROTATION_SPEED: {
-        value: degToRad(0.5),
-        min: degToRad(0.1),
-        max: degToRad(5),
-        step: degToRad(0.1),
-      },
-    }
-  );
   const rb = useRef();
   const container = useRef();
   const character = useRef();
@@ -49,6 +36,7 @@ export const CharacterController = () => {
 
   const [animation, setAnimation] = useState("idle");
   const [physicsReady, setPhysicsReady] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(null);
 
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
@@ -59,31 +47,54 @@ export const CharacterController = () => {
   const cameraLookAt = useRef(new Vector3());
   const [, get] = useKeyboardControls();
   const isClicking = useRef(false);
+  const touchSensitivity = 0.01;
 
   useEffect(() => {
-    const onMouseDown = (e) => {
+    const handleTouchStart = (e) => {
+      setTouchStartX(e.touches[0].clientX);
+    };
+
+    const handleTouchMove = (e) => {
+      if (touchStartX !== null) {
+        const touchDeltaX = e.touches[0].clientX - touchStartX;
+        rotationTarget.current -= touchDeltaX * touchSensitivity;
+        setTouchStartX(e.touches[0].clientX);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      setTouchStartX(null);
+    };
+
+    const onMouseDown = () => {
       isClicking.current = true;
     };
-    const onMouseUp = (e) => {
+    const onMouseUp = () => {
       isClicking.current = false;
     };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
     document.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mouseup", onMouseUp);
     document.addEventListener("touchstart", onMouseDown);
     document.addEventListener("touchend", onMouseUp);
+
     return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
       document.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("touchstart", onMouseDown);
       document.removeEventListener("touchend", onMouseUp);
     };
-  }, []);
+  }, [touchStartX]);
 
   useEffect(() => {
-    // Small timeout to ensure physics world is ready
     const timeout = setTimeout(() => {
       if (rb.current) {
-        // Set initial position slightly above the ground to prevent falling through
         rb.current.setTranslation({ x: 0, y: 0.5, z: 0 }, true);
         setPhysicsReady(true);
       }
@@ -93,109 +104,87 @@ export const CharacterController = () => {
   }, []);
 
   useFrame(({ camera, mouse }) => {
-    if (!physicsReady || !rb.current) return;
-    if (rb.current) {
-      const vel = rb.current.linvel();
+    if (!physicsReady || !rb.current || !character.current) return;
 
-      const movement = {
-        x: 0,
-        z: 0,
-      };
+    const vel = rb.current.linvel();
+    const movement = { x: 0, z: 0 };
 
-      if (get().forward) {
-        movement.z = 1;
+    if (get().forward) movement.z = 1;
+    if (get().backward) movement.z = -1;
+
+    let speed = get().run ? 1.6 : 1;
+
+    if (isClicking.current) {
+      movement.z = mouse.y + 0.4;
+      if (Math.abs(movement.z) > 0.5) {
+        speed = 1.6;
       }
-      if (get().backward) {
-        movement.z = -1;
-      }
+    }
 
-      let speed = get().run ? RUN_SPEED : WALK_SPEED;
+    if (get().left) movement.x = 1;
+    if (get().right) movement.x = -1;
 
-      if (isClicking.current) {
-        if (Math.abs(mouse.x) > 0.1) {
-          movement.x = -mouse.x;
-        }
-        movement.z = mouse.y + 0.4;
-        if (Math.abs(movement.x) > 0.5 || Math.abs(movement.z) > 0.5) {
-          speed = RUN_SPEED;
-        }
-      }
+    if (movement.x !== 0 || movement.z !== 0) {
+      characterRotationTarget.current = Math.atan2(movement.x, movement.z);
+      vel.x =
+        Math.sin(rotationTarget.current + characterRotationTarget.current) *
+        speed;
+      vel.z =
+        Math.cos(rotationTarget.current + characterRotationTarget.current) *
+        speed;
 
-      if (get().left) {
-        movement.x = 1;
-      }
-      if (get().right) {
-        movement.x = -1;
-      }
-
-      if (movement.x !== 0) {
-        rotationTarget.current += ROTATION_SPEED * movement.x;
-      }
-
-      if (movement.x !== 0 || movement.z !== 0) {
-        characterRotationTarget.current = Math.atan2(movement.x, movement.z);
-        vel.x =
-          Math.sin(rotationTarget.current + characterRotationTarget.current) *
-          speed;
-        vel.z =
-          Math.cos(rotationTarget.current + characterRotationTarget.current) *
-          speed;
-        if (speed === RUN_SPEED) {
-          setAnimation("run");
-        } else {
-          setAnimation("walk");
-        }
+      if (speed === 1.6) {
+        setAnimation("run");
       } else {
-        setAnimation("idle");
+        setAnimation("walk");
       }
-      character.current.rotation.y = lerpAngle(
-        character.current.rotation.y,
-        characterRotationTarget.current,
-        0.1
-      );
+    } else {
+      setAnimation("idle");
+    }
 
-      rb.current.setLinvel(vel, true);
+    character.current.rotation.y = lerpAngle(
+      character.current.rotation.y,
+      characterRotationTarget.current,
+      0.1
+    );
 
-      // Camera
-      container.current.rotation.y = MathUtils.lerp(
-        container.current.rotation.y,
-        rotationTarget.current,
-        0.1
-      );
+    rb.current.setLinvel(vel, true);
 
-      cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
-      const characterPosition = new Vector3();
-      character.current.getWorldPosition(characterPosition);
+    container.current.rotation.y = MathUtils.lerp(
+      container.current.rotation.y,
+      rotationTarget.current,
+      0.1
+    );
 
-      // Calculate distance to walls
-      const distanceToWall = 2; // Minimum distance from walls
-      const cameraDirection = cameraWorldPosition.current
-        .clone()
-        .sub(characterPosition)
-        .normalize();
-      const desiredDistance = 3; // Desired camera distance
-      const actualDistance = Math.min(
+    const characterPosition = new Vector3();
+    character.current.getWorldPosition(characterPosition);
+
+    cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
+    const cameraDirection = cameraWorldPosition.current
+      .clone()
+      .sub(characterPosition)
+      .normalize();
+
+    const distanceToWall = 2;
+    const desiredDistance = 3;
+    const actualDistance = Math.min(
+      desiredDistance,
+      world.castRay(
+        new rapier.Ray(characterPosition, cameraDirection),
         desiredDistance,
-        world.castRay(
-          new rapier.Ray(characterPosition, cameraDirection),
-          desiredDistance,
-          true
-        )?.toi || desiredDistance
-      );
+        true
+      )?.toi || desiredDistance
+    );
 
-      // Set camera position
-      const targetPosition = characterPosition
-        .clone()
-        .add(cameraDirection.multiplyScalar(actualDistance - distanceToWall));
-      camera.position.lerp(targetPosition, 0.1);
+    const targetPosition = characterPosition
+      .clone()
+      .add(cameraDirection.multiplyScalar(actualDistance - distanceToWall));
+    camera.position.lerp(targetPosition, 0.1);
 
-      if (cameraTarget.current) {
-        cameraTarget.current.getWorldPosition(
-          cameraLookAtWorldPosition.current
-        );
-        cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
-        camera.lookAt(cameraLookAt.current);
-      }
+    if (cameraTarget.current) {
+      cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
+      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
+      camera.lookAt(cameraLookAt.current);
     }
   });
 

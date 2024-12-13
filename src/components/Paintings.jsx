@@ -49,45 +49,35 @@ const Painting = ({ data }) => {
     if (!meshRef.current) return;
     const distance = camera.position.distanceTo(meshRef.current.position);
 
-    if (distance < 2) {
-      // Increased detection distance for testing
+    if (distance < 3) {
       if (!showInfo) {
-        console.log("Player near painting:", data.info.title); // Debug log
+        console.log("Player near painting:", data.info.title);
         setShowInfo(true);
       }
     } else if (showInfo) {
-      console.log("Player left painting area:", data.info.title); // Debug log
+      console.log("Player left painting area:", data.info.title);
       setShowInfo(false);
     }
   });
 
-  const position = [
-    data.position.x,
-    data.position.y + data.height / 2 + 0.5, // Position overlay above painting
-    data.position.z,
-  ];
-
   return (
-    <mesh
+    <group
       ref={meshRef}
       position={[data.position.x, data.position.y, data.position.z]}
-      rotation={[0, data.rotationY, 0]}
+      userData={{ isPainting: true, paintingData: data }}
     >
-      <planeGeometry args={[data.width, data.height]} />
-      <meshStandardMaterial
-        map={texture}
-        emissive="#404040"
-        emissiveIntensity={0.2}
-        roughness={0.5}
-        metalness={0}
-      />
-      {showInfo && (
-        <PaintingOverlay
-          info={data.info}
-          position={[-0.5, 0, 0]} // Local position relative to the mesh
+      <mesh rotation={[0, data.rotationY, 0]}>
+        <planeGeometry args={[data.width, data.height]} />
+        <meshStandardMaterial
+          map={texture}
+          emissive="#404040"
+          emissiveIntensity={0.2}
+          roughness={0.5}
+          metalness={0}
         />
-      )}
-    </mesh>
+      </mesh>
+      {showInfo && <PaintingOverlay info={data.info} position={[-0.5, 0, 0]} />}
+    </group>
   );
 };
 
