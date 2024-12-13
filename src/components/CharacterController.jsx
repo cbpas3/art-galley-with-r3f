@@ -48,6 +48,7 @@ export const CharacterController = () => {
   const { rapier, world } = useRapier();
 
   const [animation, setAnimation] = useState("idle");
+  const [physicsReady, setPhysicsReady] = useState(false);
 
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
@@ -78,7 +79,21 @@ export const CharacterController = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Small timeout to ensure physics world is ready
+    const timeout = setTimeout(() => {
+      if (rb.current) {
+        // Set initial position slightly above the ground to prevent falling through
+        rb.current.setTranslation({ x: 0, y: 0.5, z: 0 }, true);
+        setPhysicsReady(true);
+      }
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   useFrame(({ camera, mouse }) => {
+    if (!physicsReady || !rb.current) return;
     if (rb.current) {
       const vel = rb.current.linvel();
 
@@ -185,7 +200,7 @@ export const CharacterController = () => {
   });
 
   return (
-    <RigidBody colliders={false} lockRotations ref={rb}>
+    <RigidBody colliders={false} lockRotations ref={rb} position={[0, 0.5, 0]}>
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1.5} position-z={-2} />

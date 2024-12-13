@@ -1,7 +1,8 @@
 import { KeyboardControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
-
+import { Preload } from "@react-three/drei";
+import { Suspense, useEffect, useState } from "react";
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -11,6 +12,16 @@ const keyboardMap = [
 ];
 
 function App() {
+  const [sceneReady, setSceneReady] = useState(false);
+
+  useEffect(() => {
+    // Give time for physics to initialize
+    const timeout = setTimeout(() => {
+      setSceneReady(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
   return (
     <KeyboardControls map={keyboardMap}>
       <Canvas
@@ -20,8 +31,11 @@ function App() {
           touchAction: "none",
         }}
       >
-        <color attach="background" args={["#ececec"]} />
-        <Experience />
+        <Suspense fallback={null}>
+          <Preload all />
+          <color attach="background" args={["#ececec"]} />
+          {sceneReady && <Experience />}
+        </Suspense>
       </Canvas>
     </KeyboardControls>
   );
