@@ -28,9 +28,6 @@ const PaintingOverlay = ({ info, position }) => {
       <div className="painting-info">
         <h3 style={{ margin: "0 0 8px 0", fontSize: "50px" }}>{info.title}</h3>
         <p style={{ margin: "4px 0", fontSize: "30px" }}>
-          <strong>Artist:</strong> {info.artist}
-        </p>
-        <p style={{ margin: "4px 0", fontSize: "30px" }}>
           <strong>Year:</strong> {info.year}
         </p>
         <p style={{ margin: "4px 0", fontSize: "30px" }}>{info.description}</p>

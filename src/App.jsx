@@ -10,7 +10,6 @@ const keyboardMap = [
   { name: "left", keys: ["ArrowLeft", "KeyA"] },
   { name: "right", keys: ["ArrowRight", "KeyD"] },
   { name: "run", keys: ["Shift"] },
-  { name: "interact", keys: ["KeyE"] }, // Added interact key
 ];
 
 function App() {
