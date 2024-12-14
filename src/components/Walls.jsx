@@ -2,7 +2,7 @@ import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import * as THREE from "three";
 import { RigidBody } from "@react-three/rapier";
-
+import { useTexture } from "@react-three/drei";
 export default function Walls() {
   const [
     colorTexture,
@@ -10,20 +10,13 @@ export default function Walls() {
     normalTexture,
     roughnessTexture,
     aoTexture,
-  ] = useLoader(
-    TextureLoader,
-    [
-      "/Bricks066_4K-JPG/Bricks066_4K-JPG_Color.jpg",
-      "/Bricks066_4K-JPG/Bricks066_4K-JPG_Displacement.jpg",
-      "/Bricks066_4K-JPG/Bricks066_4K-JPG_NormalGL.jpg",
-      "/Bricks066_4K-JPG/Bricks066_4K-JPG_Roughness.jpg",
-      "/Bricks066_4K-JPG/Bricks066_4K-JPG_AmbientOcclusion.jpg",
-    ],
-    undefined,
-    (error) => {
-      console.error("Error loading texture:", error);
-    }
-  );
+  ] = useTexture([
+    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Color.jpg",
+    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Displacement.jpg",
+    "/Bricks066_4K-JPG/Bricks066_4K-JPG_NormalGL.jpg",
+    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Roughness.jpg",
+    "/Bricks066_4K-JPG/Bricks066_4K-JPG_AmbientOcclusion.jpg",
+  ]);
 
   const [
     floor_colorTexture,
@@ -31,7 +24,7 @@ export default function Walls() {
     floor_normalTexture,
     floor_roughnessTexture,
     floor_aoTexture,
-  ] = useLoader(TextureLoader, [
+  ] = useTexture([
     "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_Color.jpg",
     "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_Displacement.jpg",
     "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_NormalGL.jpg",

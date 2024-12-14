@@ -1,4 +1,4 @@
-import { KeyboardControls } from "@react-three/drei";
+import { KeyboardControls, Loader, Html } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import { Preload } from "@react-three/drei";
@@ -11,6 +11,16 @@ const keyboardMap = [
   { name: "right", keys: ["ArrowRight", "KeyD"] },
   { name: "run", keys: ["Shift"] },
 ];
+
+const LoadingScreen = () => {
+  return (
+    <Html center>
+      <div style={{ color: "white", textAlign: "center" }}>
+        <h2>Loading Experience...</h2>
+      </div>
+    </Html>
+  );
+};
 
 function App() {
   const [sceneReady, setSceneReady] = useState(false);
@@ -38,12 +48,13 @@ function App() {
           touchAction: "none",
         }}
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingScreen />}>
           <Preload all />
           <color attach="background" args={["#ececec"]} />
           {sceneReady && <Experience />}
         </Suspense>
       </Canvas>
+      <Loader />
     </KeyboardControls>
   );
 }
