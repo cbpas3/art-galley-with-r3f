@@ -3,7 +3,11 @@ import { TextureLoader } from "three";
 import * as THREE from "three";
 import { RigidBody } from "@react-three/rapier";
 import { useTexture } from "@react-three/drei";
+import { isMobile } from "react-device-detect";
+import { useEffect } from "react";
 export default function Walls() {
+  const textureQuality = isMobile ? "2K" : "4K";
+
   const [
     colorTexture,
     displacementTexture,
@@ -11,11 +15,11 @@ export default function Walls() {
     roughnessTexture,
     aoTexture,
   ] = useTexture([
-    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Color.jpg",
-    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Displacement.jpg",
-    "/Bricks066_4K-JPG/Bricks066_4K-JPG_NormalGL.jpg",
-    "/Bricks066_4K-JPG/Bricks066_4K-JPG_Roughness.jpg",
-    "/Bricks066_4K-JPG/Bricks066_4K-JPG_AmbientOcclusion.jpg",
+    `/Bricks066_${textureQuality}-JPG/Bricks066_${textureQuality}-JPG_Color.jpg`,
+    `/Bricks066_${textureQuality}-JPG/Bricks066_${textureQuality}-JPG_Displacement.jpg`,
+    `/Bricks066_${textureQuality}-JPG/Bricks066_${textureQuality}-JPG_NormalGL.jpg`,
+    `/Bricks066_${textureQuality}-JPG/Bricks066_${textureQuality}-JPG_Roughness.jpg`,
+    `/Bricks066_${textureQuality}-JPG/Bricks066_${textureQuality}-JPG_AmbientOcclusion.jpg`,
   ]);
 
   const [
@@ -25,11 +29,11 @@ export default function Walls() {
     floor_roughnessTexture,
     floor_aoTexture,
   ] = useTexture([
-    "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_Color.jpg",
-    "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_Displacement.jpg",
-    "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_NormalGL.jpg",
-    "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_Roughness.jpg",
-    "/WoodFloor040_4K-JPG/WoodFloor040_4K-JPG_AmbientOcclusion.jpg",
+    `/WoodFloor040_${textureQuality}-JPG/WoodFloor040_${textureQuality}-JPG_Color.jpg`,
+    `/WoodFloor040_${textureQuality}-JPG/WoodFloor040_${textureQuality}-JPG_Displacement.jpg`,
+    `/WoodFloor040_${textureQuality}-JPG/WoodFloor040_${textureQuality}-JPG_NormalGL.jpg`,
+    `/WoodFloor040_${textureQuality}-JPG/WoodFloor040_${textureQuality}-JPG_Roughness.jpg`,
+    `/WoodFloor040_${textureQuality}-JPG/WoodFloor040_${textureQuality}-JPG_AmbientOcclusion.jpg`,
   ]);
 
   // Set up texture repeating
@@ -71,6 +75,20 @@ export default function Walls() {
       side={THREE.DoubleSide}
     />
   );
+
+  // Optimize textures
+  useEffect(() => {
+    [
+      colorTexture,
+      displacementTexture,
+      normalTexture,
+      roughnessTexture,
+      aoTexture,
+    ].forEach((texture) => {
+      texture.minFilter = THREE.LinearFilter;
+      texture.generateMipmaps = !isMobile;
+    });
+  }, []);
 
   return (
     <group>
