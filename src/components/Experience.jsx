@@ -42,50 +42,7 @@ export function Experience() {
 
   return (
     <>
-      <OrbitControls
-        enablePan={false}
-        maxPolarAngle={Math.PI / 2}
-        minDistance={2}
-        maxDistance={20}
-      />
-
-      <EnvironmentMap preset="sunset" intensity={1.5} />
-
-      {/* Lights */}
-      <ambientLight intensity={0.5} />
-      <pointLight
-        position={[0, 3, 0]}
-        intensity={1}
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        distance={10}
-      />
-
-      {/* Light bulb mesh */}
-      <mesh position={[0, 3 - 0.1, 0]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial emissive="#ffffff" emissiveIntensity={2} />
-      </mesh>
-
-      {/* Directional light */}
-      <directionalLight
-        intensity={0.5}
-        castShadow
-        position={[-10, 10, 10]}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-bias={-0.00005}
-      >
-        <OrthographicCamera
-          left={-22}
-          right={15}
-          top={10}
-          bottom={-20}
-          ref={shadowCameraRef}
-          attach={"shadow-camera"}
-        />
-      </directionalLight>
+      <EnvironmentMap preset="warehouse" intensity={1.5} />
 
       <Suspense fallback={null}>
         <Scene onEnvironmentLoaded={() => setEnvironmentLoaded(true)} />
