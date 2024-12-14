@@ -2,7 +2,8 @@ import { KeyboardControls, Loader } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
 import { Suspense } from "react";
-
+import { isMobile } from "react-device-detect";
+import { useEffect, useState } from "react";
 const keyboardMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -12,10 +13,21 @@ const keyboardMap = [
 ];
 
 function App() {
+  const [dpr, setDpr] = useState(1.5);
+
+  useEffect(() => {
+    // Lower quality on mobile
+    if (isMobile) {
+      setDpr(1);
+    }
+  }, []);
+
   return (
     <KeyboardControls map={keyboardMap}>
       <Canvas
         shadows
+        dpr={dpr}
+        performance={{ min: 0.5 }}
         camera={{
           position: [0, 2, 5],
           fov: 75,
@@ -24,6 +36,11 @@ function App() {
         }}
         style={{
           touchAction: "none",
+        }}
+        gl={{
+          powerPreference: "high-performance",
+          antialias: !isMobile, // Disable antialiasing on mobile
+          alpha: false, // Disable alpha
         }}
       >
         <color attach="background" args={["#ececec"]} />
