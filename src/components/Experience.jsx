@@ -1,6 +1,6 @@
 import { Environment, OrthographicCamera } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { useRef, useState } from "react";
+import { useRef, useState, Suspense } from "react";
 import { CharacterController } from "./CharacterController";
 import Paintings from "./Paintings";
 import Walls from "./Walls";
@@ -56,9 +56,15 @@ export const Experience = () => {
       </directionalLight>
 
       <Physics>
-        <Walls />
-        <Paintings nearPainting={nearPainting} />
-        <CharacterController onNearPainting={handlePaintingProximity} />
+        <Suspense fallback={null}>
+          <Walls />
+        </Suspense>
+        <Suspense fallback={null}>
+          <Paintings nearPainting={nearPainting} />
+        </Suspense>
+        <Suspense fallback={null}>
+          <CharacterController onNearPainting={handlePaintingProximity} />
+        </Suspense>
       </Physics>
     </>
   );
