@@ -4,7 +4,6 @@ import { TextureLoader } from "three";
 import { paintingData } from "./paintingData";
 import { Suspense, useState, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import * as THREE from "three";
 import { Html } from "@react-three/drei";
 
 const PaintingOverlay = ({ info, position }) => {
@@ -36,7 +35,14 @@ const PaintingOverlay = ({ info, position }) => {
   );
 };
 
-const Painting = ({ data }) => {
+const Painting = ({
+  data,
+  setTitle,
+  setDate,
+  setDescription,
+  highlightedPainting,
+  setHighlightedPainting,
+}) => {
   const texture = useLoader(TextureLoader, data.imgSrc);
   const meshRef = useRef();
   const { camera } = useThree();
@@ -46,14 +52,18 @@ const Painting = ({ data }) => {
     if (!meshRef.current) return;
     const distance = camera.position.distanceTo(meshRef.current.position);
 
-    if (distance < 3) {
-      if (!showInfo) {
-        console.log("Player near painting:", data.info.title);
-        setShowInfo(true);
+    if (distance < 1.5) {
+      setHighlightedPainting(data.info.title);
+      setTitle(data.info.title);
+      setDate(data.info.year);
+      setDescription(data.info.description);
+    } else {
+      if (highlightedPainting === data.info.title) {
+        setHighlightedPainting(null);
+        setTitle("");
+        setDate("");
+        setDescription("");
       }
-    } else if (showInfo) {
-      console.log("Player left painting area:", data.info.title);
-      setShowInfo(false);
     }
   });
 
@@ -78,11 +88,21 @@ const Painting = ({ data }) => {
   );
 };
 
-const Paintings = () => {
+const Paintings = ({ setTitle, setDate, setDescription }) => {
+  const [highlightedPainting, setHighlightedPainting] = useState(null);
+
   return (
     <Suspense fallback={null}>
       {paintingData.map((painting, index) => (
-        <Painting key={index} data={painting} />
+        <Painting
+          key={index}
+          data={painting}
+          setTitle={setTitle}
+          setDate={setDate}
+          setDescription={setDescription}
+          highlightedPainting={highlightedPainting}
+          setHighlightedPainting={setHighlightedPainting}
+        />
       ))}
     </Suspense>
   );

@@ -11,7 +11,7 @@ import { Environment } from "./Environment";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-function Scene({ onEnvironmentLoaded }) {
+function Scene({ onEnvironmentLoaded, setTitle, setDate, setDescription }) {
   const { camera } = useThree();
 
   useEffect(() => {
@@ -26,12 +26,16 @@ function Scene({ onEnvironmentLoaded }) {
     <Physics>
       <Environment />
       <CharacterController />
-      <Paintings />
+      <Paintings
+        setTitle={setTitle}
+        setDate={setDate}
+        setDescription={setDescription}
+      />
     </Physics>
   );
 }
 
-export function Experience() {
+export function Experience({ setTitle, setDate, setDescription }) {
   const shadowCameraRef = useRef();
   const [environmentLoaded, setEnvironmentLoaded] = useState(false);
   const [nearPainting, setNearPainting] = useState(null);
@@ -42,10 +46,14 @@ export function Experience() {
 
   return (
     <>
-      <EnvironmentMap preset="warehouse" intensity={1.5} />
-
+      <EnvironmentMap preset="warehouse" intensity={2} />
       <Suspense fallback={null}>
-        <Scene onEnvironmentLoaded={() => setEnvironmentLoaded(true)} />
+        <Scene
+          onEnvironmentLoaded={() => setEnvironmentLoaded(true)}
+          setTitle={setTitle}
+          setDate={setDate}
+          setDescription={setDescription}
+        />
       </Suspense>
     </>
   );

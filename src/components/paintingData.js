@@ -154,7 +154,7 @@ export const paintingData = [
     rotationY: -Math.PI / 2,
     info: {
       title: `Third anniversary`,
-      description: `At Odaiba with Rainbow Bridge in the background. I can't believe you let me wear that scarf.`,
+      description: `At Odaiba with Rainbow Bridge in the background.`,
       year: `Dec 1 2023`,
     },
   },
@@ -189,8 +189,8 @@ export const paintingData = [
     position: { x: 4.48, y: 1.2, z: -2 + 1.3 * 3 },
     rotationY: -Math.PI / 2,
     info: {
-      title: `The Proposal`,
-      description: `Will you marry me?`,
+      title: `Proposal`,
+      description: `You're my soulmate. Will you marry me?`,
       year: `Dec 16 2024`,
     },
   },

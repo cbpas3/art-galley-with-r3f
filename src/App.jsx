@@ -14,6 +14,9 @@ const keyboardMap = [
 
 function App() {
   const [dpr, setDpr] = useState(1.5);
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     // Lower quality on mobile
@@ -24,6 +27,25 @@ function App() {
 
   return (
     <KeyboardControls map={keyboardMap}>
+      {title !== "" && (
+        <div
+          style={{
+            width: "300px",
+            height: "auto",
+            position: "absolute",
+            top: 10,
+            left: 10,
+            zIndex: 10,
+            backgroundColor: "black",
+            opacity: 0.75,
+            padding: "10px",
+          }}
+        >
+          <h3 style={{ color: "white" }}>{`${title}`}</h3>
+          <p style={{ color: "white" }}>{`${description}`}</p>
+          <p style={{ color: "white" }}>{`${date}`}</p>
+        </div>
+      )}
       <Canvas
         shadows
         dpr={dpr}
@@ -45,7 +67,11 @@ function App() {
       >
         <color attach="background" args={["#ececec"]} />
         <Suspense fallback={null}>
-          <Experience />
+          <Experience
+            setTitle={setTitle}
+            setDate={setDate}
+            setDescription={setDescription}
+          />
         </Suspense>
       </Canvas>
       <Loader />
