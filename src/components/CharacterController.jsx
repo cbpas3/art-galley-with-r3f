@@ -98,7 +98,7 @@ export const CharacterController = () => {
         rb.current.setTranslation({ x: 0, y: 0.5, z: 0 }, true);
         setPhysicsReady(true);
       }
-    }, 100);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -184,12 +184,20 @@ export const CharacterController = () => {
     if (cameraTarget.current) {
       cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
       cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
-      camera.lookAt(cameraLookAt.current);
+      if (camera) {
+        camera.lookAt(cameraLookAt.current);
+      }
     }
   });
 
   return (
-    <RigidBody colliders={false} lockRotations ref={rb} position={[0, 0.5, 0]}>
+    <RigidBody
+      colliders={false}
+      lockRotations
+      ref={rb}
+      position={[0, 0.5, 0]}
+      enabledRotations={[false, false, false]}
+    >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1.5} />
         <group ref={cameraPosition} position-y={1.5} position-z={-2} />
