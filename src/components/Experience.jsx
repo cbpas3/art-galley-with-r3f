@@ -38,11 +38,6 @@ function Scene({ onEnvironmentLoaded, setTitle, setDate, setDescription }) {
 export function Experience({ setTitle, setDate, setDescription }) {
   const shadowCameraRef = useRef();
   const [environmentLoaded, setEnvironmentLoaded] = useState(false);
-  const [nearPainting, setNearPainting] = useState(null);
-
-  const handlePaintingProximity = (paintingId) => {
-    setNearPainting(paintingId);
-  };
 
   return (
     <>

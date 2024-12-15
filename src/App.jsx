@@ -19,7 +19,6 @@ function App() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    // Lower quality on mobile
     if (isMobile) {
       setDpr(1);
     }

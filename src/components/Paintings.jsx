@@ -2,7 +2,7 @@
 import { useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import { paintingData } from "./paintingData";
-import { Suspense, useState, useRef } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 
@@ -42,21 +42,56 @@ const Painting = ({
   setDescription,
   highlightedPainting,
   setHighlightedPainting,
+  paintingsVisited,
+  setPaintingsVisited,
 }) => {
-  const texture = useLoader(TextureLoader, data.imgSrc);
+  const specialPainting = {
+    imgSrc: `memories/16.jpg`,
+
+    info: {
+      title: `Proposal`,
+      description: `You're my soulmate. Will you marry me?`,
+      year: `Dec 16 2024`,
+    },
+  };
   const meshRef = useRef();
   const { camera } = useThree();
-  const [showInfo, setShowInfo] = useState(false);
+  const [texture, setTexture] = useState(useLoader(TextureLoader, data.imgSrc));
+  const specialTexture = useLoader(TextureLoader, "memories/16.jpg");
+
+  useEffect(() => {
+    if (paintingsVisited.length === paintingData.length) {
+      if (data.info.title === "?") {
+        setTexture(specialTexture);
+      }
+    }
+  }, [paintingsVisited]);
 
   useFrame(() => {
     if (!meshRef.current) return;
     const distance = camera.position.distanceTo(meshRef.current.position);
 
-    if (distance < 1.5) {
+    if (distance < 1) {
       setHighlightedPainting(data.info.title);
-      setTitle(data.info.title);
-      setDate(data.info.year);
-      setDescription(data.info.description);
+      if (
+        data.info.title === "?" &&
+        paintingsVisited.length === paintingData.length
+      ) {
+        setTitle(specialPainting.info.title);
+        setDate(specialPainting.info.year);
+        setDescription(specialPainting.info.description);
+      } else {
+        setTitle(data.info.title);
+        setDate(data.info.year);
+        setDescription(data.info.description);
+      }
+
+      setPaintingsVisited((prev) => {
+        if (!prev.includes(data.info.title)) {
+          return [...prev, data.info.title];
+        }
+        return prev;
+      });
     } else {
       if (highlightedPainting === data.info.title) {
         setHighlightedPainting(null);
@@ -83,13 +118,13 @@ const Painting = ({
           metalness={0}
         />
       </mesh>
-      {showInfo && <PaintingOverlay info={data.info} position={[-0.5, 0, 0]} />}
     </group>
   );
 };
 
 const Paintings = ({ setTitle, setDate, setDescription }) => {
   const [highlightedPainting, setHighlightedPainting] = useState(null);
+  const [paintingsVisited, setPaintingsVisited] = useState([]);
 
   return (
     <Suspense fallback={null}>
@@ -102,6 +137,8 @@ const Paintings = ({ setTitle, setDate, setDescription }) => {
           setDescription={setDescription}
           highlightedPainting={highlightedPainting}
           setHighlightedPainting={setHighlightedPainting}
+          paintingsVisited={paintingsVisited}
+          setPaintingsVisited={setPaintingsVisited}
         />
       ))}
     </Suspense>

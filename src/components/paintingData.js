@@ -1,10 +1,25 @@
+const wallWidth = 10; // Assuming the wall width is 10 units
+const paintingWidth = 0.8;
+const paintingHeight = 0.6;
+const paintingsPerWall = 4;
+const wallOffset = 4.48; // Distance from center to wall
+
+// Calculate spacing and starting position
+const spacing =
+  (wallWidth - paintingWidth * paintingsPerWall) / (paintingsPerWall + 1.5);
+const startX = -wallWidth / 2 + spacing + paintingWidth / 2;
+
 export const paintingData = [
   // BACK WALL
   {
     imgSrc: `memories/0.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 3, y: 1.2, z: 4.48 },
+    position: {
+      x: startX + (spacing + paintingWidth) * 3,
+      y: 1.2,
+      z: 4.48,
+    },
     rotationY: Math.PI,
     info: {
       title: `With SME Execomm`,
@@ -16,7 +31,11 @@ export const paintingData = [
     imgSrc: `memories/1.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 2, y: 1.2, z: 4.48 },
+    position: {
+      x: startX + (spacing + paintingWidth) * 2,
+      y: 1.2,
+      z: 4.48,
+    },
     rotationY: Math.PI,
     info: {
       title: `Late night talks`,
@@ -28,7 +47,11 @@ export const paintingData = [
     imgSrc: `memories/2.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 1, y: 1.2, z: 4.48 },
+    position: {
+      x: startX + (spacing + paintingWidth) * 1,
+      y: 1.2,
+      z: 4.48,
+    },
     rotationY: Math.PI,
     info: {
       title: `At Builtmore`,
@@ -37,10 +60,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/4.jpg`,
+    imgSrc: `memories/3.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 0, y: 1.2, z: 4.48 },
+    position: {
+      x: startX + (spacing + paintingWidth) * 0,
+      y: 1.2,
+      z: 4.48,
+    },
     rotationY: Math.PI,
     info: {
       title: `First Valentine's Day`,
@@ -50,10 +77,14 @@ export const paintingData = [
   },
   // Back Wall
   {
-    imgSrc: `memories/6.jpg`,
+    imgSrc: `memories/4.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -4.48, y: 1.2, z: -2 + 1.3 * 3 },
+    position: {
+      x: -4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 3,
+    },
     rotationY: Math.PI / 2,
     info: {
       title: `Our first road trip`,
@@ -62,10 +93,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/7.jpg`,
+    imgSrc: `memories/5.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -4.48, y: 1.2, z: -2 + 1.3 * 2 },
+    position: {
+      x: -4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 2,
+    },
     rotationY: Math.PI / 2,
     info: {
       title: `Our first anniversary`,
@@ -74,10 +109,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/9.jpg`,
+    imgSrc: `memories/6.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -4.48, y: 1.2, z: -2 + 1.3 * 1 },
+    position: {
+      x: -4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 1,
+    },
     rotationY: Math.PI / 2,
     info: {
       title: `Our first and only hike`,
@@ -86,10 +125,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/12.jpg`,
+    imgSrc: `memories/7.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -4.48, y: 1.2, z: -2 + 1.3 * 0 },
+    position: {
+      x: -4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 0,
+    },
     rotationY: Math.PI / 2,
     info: {
       title: `Our second anniversary`,
@@ -99,10 +142,14 @@ export const paintingData = [
   },
   // Left Wall
   {
-    imgSrc: `memories/13.jpg`,
+    imgSrc: `memories/8.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 0, y: 1.2, z: -4.48 }, // Moved much closer
+    position: {
+      x: startX + (spacing + paintingWidth) * 0,
+      y: 1.2,
+      z: -4.48,
+    }, // Moved much closer
     rotationY: 0,
     info: {
       title: `Our first trip abroad`,
@@ -111,10 +158,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/14.jpg`,
+    imgSrc: `memories/9.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 1, y: 1.2, z: -4.48 }, // Moved much closer
+    position: {
+      x: startX + (spacing + paintingWidth) * 1,
+      y: 1.2,
+      z: -4.48,
+    }, // Moved much closer
     rotationY: 0,
     info: {
       title: `Our second trip abroad`,
@@ -123,10 +174,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/16.jpeg`,
+    imgSrc: `memories/10.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 2, y: 1.2, z: -4.48 }, // Moved much closer
+    position: {
+      x: startX + (spacing + paintingWidth) * 2,
+      y: 1.2,
+      z: -4.48,
+    }, // Moved much closer
     rotationY: 0,
     info: {
       title: `Our first big purchase together`,
@@ -135,10 +190,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/18.jpg`,
+    imgSrc: `memories/11.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: -2 + 1.3 * 3, y: 1.2, z: -4.48 }, // Moved much closer
+    position: {
+      x: startX + (spacing + paintingWidth) * 3,
+      y: 1.2,
+      z: -4.48,
+    }, // Moved much closer
     rotationY: 0,
     info: {
       title: `1 Month in Japan`,
@@ -147,10 +206,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/20.jpg`,
+    imgSrc: `memories/12.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: 4.48, y: 1.2, z: -2 + 1.3 * 0 },
+    position: {
+      x: 4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 0,
+    },
     rotationY: -Math.PI / 2,
     info: {
       title: `Third anniversary`,
@@ -159,10 +222,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/21.jpg`,
+    imgSrc: `memories/13.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: 4.48, y: 1.2, z: -2 + 1.3 * 1 },
+    position: {
+      x: 4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 1,
+    },
     rotationY: -Math.PI / 2,
     info: {
       title: `First trip abroad with your family`,
@@ -171,10 +238,14 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/22.jpg`,
+    imgSrc: `memories/14.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: 4.48, y: 1.2, z: -2 + 1.3 * 2 },
+    position: {
+      x: 4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 2,
+    },
     rotationY: -Math.PI / 2,
     info: {
       title: `Fourth anniversary`,
@@ -183,15 +254,19 @@ export const paintingData = [
     },
   },
   {
-    imgSrc: `memories/questionmark.jpg`,
+    imgSrc: `memories/15.jpg`,
     width: 0.8,
     height: 0.6,
-    position: { x: 4.48, y: 1.2, z: -2 + 1.3 * 3 },
+    position: {
+      x: 4.48,
+      y: 1.2,
+      z: startX + (spacing + paintingWidth) * 3,
+    },
     rotationY: -Math.PI / 2,
     info: {
-      title: `Proposal`,
-      description: `You're my soulmate. Will you marry me?`,
-      year: `Dec 16 2024`,
+      title: `?`,
+      description: `?`,
+      year: `?`,
     },
   },
 ];
