@@ -23,7 +23,7 @@ export const paintingData = [
     rotationY: Math.PI,
     info: {
       title: `With SME Execomm`,
-      description: `You were always the one I could trust the most.`,
+      description: `Where our friendship started 😊`,
       year: `~2019`,
     },
   },
@@ -39,7 +39,7 @@ export const paintingData = [
     rotationY: Math.PI,
     info: {
       title: `Late night talks`,
-      description: `Taken without my consent :P`,
+      description: `Taken without my consent 😛`,
       year: `~2020`,
     },
   },
@@ -55,7 +55,7 @@ export const paintingData = [
     rotationY: Math.PI,
     info: {
       title: `At Builtmore`,
-      description: `I think this was the first time or one of the first times I went to builtmore.`,
+      description: `I always looked forward to visiting you 😊`,
       year: `~ Dec 2020`,
     },
   },
@@ -71,7 +71,7 @@ export const paintingData = [
     rotationY: Math.PI,
     info: {
       title: `First Valentine's Day`,
-      description: `Flowers and Panda with a sablay.`,
+      description: `I love buying gifts for you 😁`,
       year: `Feb 13 2021`,
     },
   },
@@ -88,7 +88,7 @@ export const paintingData = [
     rotationY: Math.PI / 2,
     info: {
       title: `Our first road trip`,
-      description: `We went to Tagaytay for a massage and food?`,
+      description: `How could you let me go out with that hair 😞`,
       year: `Nov 27 2021`,
     },
   },
@@ -104,7 +104,7 @@ export const paintingData = [
     rotationY: Math.PI / 2,
     info: {
       title: `Our first anniversary`,
-      description: `We went to a fancy restaurant in Makati`,
+      description: `You looked very pretty 😘`,
       year: `Dec 1 2021`,
     },
   },
@@ -120,7 +120,7 @@ export const paintingData = [
     rotationY: Math.PI / 2,
     info: {
       title: `Our first and only hike`,
-      description: `We spent 9k on equipment that we never used again lol.`,
+      description: `We spent 9k on equipment that we never used again 🥲`,
       year: `June 18 2022`,
     },
   },
@@ -136,7 +136,7 @@ export const paintingData = [
     rotationY: Math.PI / 2,
     info: {
       title: `Our second anniversary`,
-      description: `Expensive restaurant in Mandaluyong. I liked the steak.`,
+      description: `You looked absolutely stunning 😍`,
       year: `Dec 10 2022`,
     },
   },
@@ -153,7 +153,7 @@ export const paintingData = [
     rotationY: 0,
     info: {
       title: `Our first trip abroad`,
-      description: `7 days in Japan.`,
+      description: `I was so happy it was with you 😊`,
       year: `May 14 2023`,
     },
   },
@@ -169,7 +169,7 @@ export const paintingData = [
     rotationY: 0,
     info: {
       title: `Our second trip abroad`,
-      description: `It meant a lot to me that it was with my family.`,
+      description: `It meant a lot to me that you were with me and my family 😊`,
       year: `July 1 2023`,
     },
   },
@@ -185,7 +185,7 @@ export const paintingData = [
     rotationY: 0,
     info: {
       title: `Our first big purchase together`,
-      description: `After months of trying to pick out a car.`,
+      description: `After months of deciding on which car and where to buy from 😆`,
       year: `Sept 11 2023`,
     },
   },
@@ -201,7 +201,7 @@ export const paintingData = [
     rotationY: 0,
     info: {
       title: `1 Month in Japan`,
-      description: `1 big trip before you had to go to the office.`,
+      description: `Very very difficult part of my life and I'm glad you were there with me.`,
       year: `Nov 23 2023`,
     },
   },
@@ -217,7 +217,7 @@ export const paintingData = [
     rotationY: -Math.PI / 2,
     info: {
       title: `Third anniversary`,
-      description: `At Odaiba with Rainbow Bridge in the background.`,
+      description: `My baby's so beautiful 😍`,
       year: `Dec 1 2023`,
     },
   },
@@ -233,7 +233,7 @@ export const paintingData = [
     rotationY: -Math.PI / 2,
     info: {
       title: `First trip abroad with your family`,
-      description: `In Taiwan.`,
+      description: `Thank you for making me feel welcome and for comforting me.`,
       year: `Aug 6 2024`,
     },
   },
@@ -249,7 +249,7 @@ export const paintingData = [
     rotationY: -Math.PI / 2,
     info: {
       title: `Fourth anniversary`,
-      description: `In London at a Japanese-Peruvian fusion restaurant.`,
+      description: `Thank you for 4 years of patience, understanding and love. I love you.`,
       year: `Dec 1 2024`,
     },
   },
